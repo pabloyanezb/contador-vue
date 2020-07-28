@@ -1,8 +1,8 @@
 <template>
   <div>
-    <p v-if="!hovered" class="no-visible">Este texto es invisible</p>
-    <p v-if="contador!=1 && hovered">Has clickeado {{contador}} veces</p>
-    <p v-if="contador==1 && hovered">Has clickeado {{contador}} vez</p>
+    <p v-if="!$store.state.hovered" class="no-visible">Este texto es invisible</p>
+    <p v-if="$store.state.count!=1 && $store.state.hovered">Has clickeado {{$store.state.count}} veces</p>
+    <p v-if="$store.state.count==1 && $store.state.hovered">Has clickeado {{$store.state.count}} vez</p>
     <button @click="clic()" @mouseover="hover()">click!</button>
   </div>
 </template>
@@ -10,25 +10,19 @@
 <script>
 export default {
   name: "Contador",
-  data() {
-    return {
-      contador: 0,
-      hovered: false
-    };
-  },
   methods: {
     clic() {
-      this.contador++;
-      localStorage.contador = this.contador;
+      this.$store.commit('increment');
+      localStorage.count = this.$store.state.count;
     },
     hover() {
       console.log("mouseover");
-      this.hovered = true;
+      this.$store.commit('hover_true');
     }
   },
   mounted() {
-    if (localStorage.contador) {
-      this.contador = localStorage.contador;
+    if (localStorage.count) {
+      this.$store.state.count = localStorage.count;
     }
   }
 };
